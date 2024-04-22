@@ -2,7 +2,7 @@ $(() => {
     $(function() {
         $('.am-container').montage({
             liquid: true,
-            fillLastRow: true,
+            fillLastRow: false,
             margin: 5,
             fixedHeight: 160,
         });
