@@ -2,25 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Image;
+use App\Services\Zip\ZipService;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Illuminate\Support\Str;
 
 class ZipController extends Controller
 {
+    public function __construct(private ZipService $zipService) {}
+
     public function zip(int $id): BinaryFileResponse
     {
-        $file = Image::where('id', '=', $id)->first();
-        $zip = new \ZipArchive();
         $zipFileName = 'image.zip';
-        $zipFilePath = public_path($zipFileName);
-
-        if ($zip->open($zipFilePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE)) {
-            $extension = pathinfo($file->name, PATHINFO_EXTENSION);
-            $zip->addFile(storage_path('app/public/' . $file->name), Str::random(5) . '.' . $extension);
-        }
-
-        $zip->close();
+        $zipFilePath = $this->zipService->make($id, $zipFileName);
 
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
