@@ -1,0 +1,10 @@
+@charset "utf-8";
+.am-wrapper{
+    float:left;
+    position:relative;
+    margin:0 0 20px 5px;
+}
+
+.am-wrapper img{
+    outline:none;
+}
